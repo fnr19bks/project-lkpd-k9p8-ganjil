@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="LKPD Interaktif E-Portofolio dan Showcase Digital - SMP Negeri 19 Kota Bekasi">
+<meta name="theme-color" content="#2563EB">
+<meta property="og:title" content="Petualangan E-Portofolio Digital">
+<meta property="og:description" content="LKPD Interaktif Kelas 9 - E-Portofolio & Showcase Digital">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<title>Petualangan E-Portofolio Digital</title>
+</head>
+<body>
+
+<!-- ============ HEADER STICKY ============ -->
+<header class="app-header" id="appHeader">
+  <div class="header-left">
+    <img src="./assets/logo.png" alt="Logo SMPN 19 Bekasi" class="header-logo" onerror="this.style.display='none'">
+    <div class="header-titles">
+      <span class="header-title" data-i18n="headerTitle">Petualangan E-Portofolio Digital</span>
+      <span class="header-subtitle" data-i18n="headerSubtitle">E-Portofolio & Showcase Digital</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="score-badge" title="Skor / Score">
+      <span class="score-label" data-i18n="score">Skor</span>
+      <span class="score-value" id="headerScore">0</span>
+    </div>
+    <button class="icon-btn" id="langToggle" aria-label="Ganti Bahasa / Change Language">🇮🇩 ID</button>
+    <button class="icon-btn" id="soundToggle" aria-label="Suara / Sound">🔊</button>
+    <button class="icon-btn" id="menuToggle" aria-label="Menu">☰</button>
+  </div>
+</header>
+
+<!-- ============ MENU DROPDOWN ============ -->
+<div class="menu-dropdown hidden" id="menuDropdown">
+  <button class="menu-item" id="btnHowToPlay" data-i18n="howToPlay">📖 Cara Bermain / How to Play</button>
+  <button class="menu-item" id="btnResetProgress" data-i18n="resetProgress">🔄 Reset Progres / Reset Progress</button>
+  <button class="menu-item" id="btnShowMap" data-i18n="backToMap">🗺️ Kembali ke Peta / Back to Map</button>
+</div>
+
+<!-- ============ MAIN CONTENT ============ -->
+<main class="app-main">
+
+  <!-- ===== SCREEN 0: SPLASH ===== -->
+  <section class="screen active" data-screen="splash" id="screen-splash">
+    <div class="splash-container">
+      <img src="./assets/logo.png" alt="Logo SMPN 19 Bekasi" class="splash-logo" onerror="this.style.display='none'">
+      <h1 class="splash-title" data-i18n="splashTitle">PETUALANGAN E-PORTOFOLIO DIGITAL</h1>
+      <p class="splash-subtitle" data-i18n="splashSubtitle">E-Portofolio & Showcase Digital — LKPD Interaktif Kelas 9</p>
+      <div class="splash-form">
+        <label for="playerName" class="input-label" data-i18n="askName">Siapa namamu? / What's your name?</label>
+        <input type="text" id="playerName" class="text-input" placeholder="Tulis namamu..." maxlength="40" autocomplete="off">
+      </div>
+      <button class="btn btn-primary btn-large" id="btnStart" data-i18n="startAdventure">🚀 MULAI PETUALANGAN / START ADVENTURE</button>
+      <button class="btn btn-secondary" id="btnHowToPlay2" data-i18n="howToPlay">📖 Cara Bermain / How to Play</button>
+    </div>
+  </section>
+
+  <!-- ===== SCREEN 1: MAP ===== -->
+  <section class="screen" data-screen="map" id="screen-map">
+    <div class="card">
+      <h2 class="section-title" data-i18n="mapTitle">🗺️ Peta Petualangan</h2>
+      <p class="section-desc" data-i18n="mapDesc">Selesaikan setiap level untuk membuka level berikutnya!</p>
+      <div class="progress-wrap">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+        <span class="progress-text" id="progressText">0%</span>
+      </div>
+      <div class="level-map" id="levelMap"></div>
+    </div>
+  </section>
+
+  <!-- ===== SCREEN: LEVEL (dinamis untuk 1-6) ===== -->
+  <section class="screen" data-screen="level" id="screen-level">
+    <div class="card">
+      <div class="level-header">
+        <button class="icon-btn" id="btnBackToMap" aria-label="Kembali ke Peta">←</button>
+        <h2 class="section-title" id="levelTitle">Level</h2>
+        <div class="level-meta">
+          <span id="levelProgress">1/1</span>
+          <button class="icon-btn" id="btnHint" aria-label="Bantuan">💡</button>
+        </div>
+      </div>
+      <div class="level-body" id="levelBody"><!-- diisi oleh JS --></div>
+    </div>
+  </section>
+
+  <!-- ===== SCREEN: FINAL RESULTS ===== -->
+  <section class="screen" data-screen="result" id="screen-result">
+    <div class="card">
+      <h2 class="section-title" data-i18n="resultTitle">🎉 Hasil Akhir</h2>
+      <div id="resultSummary"></div>
+      <div class="exit-ticket">
+        <h3 data-i18n="exitTicketTitle">📋 Exit Ticket / Refleksi</h3>
+        <label class="input-label" data-i18n="exitQ1">1. Apa 1 hal baru yang kamu pelajari hari ini?</label>
+        <textarea id="exit1" class="text-input" rows="2"></textarea>
+        <label class="input-label" data-i18n="exitQ2">2. Apa yang masih membingungkan?</label>
+        <textarea id="exit2" class="text-input" rows="2"></textarea>
+        <label class="input-label" data-i18n="exitQ3">3. Target belajarmu selanjutnya?</label>
+        <textarea id="exit3" class="text-input" rows="2"></textarea>
+      </div>
+      <div class="result-actions">
+        <button class="btn btn-primary" id="btnDownloadCert" data-i18n="downloadCert">📜 Unduh Sertifikat (PNG)</button>
+        <button class="btn btn-secondary" id="btnDownloadReport" data-i18n="downloadReport">📄 Unduh Laporan</button>
+        <button class="btn btn-secondary" id="btnShare" data-i18n="shareResult">📤 Bagikan ke Guru</button>
+        <button class="btn btn-secondary" id="btnPlayAgain" data-i18n="playAgain">🔄 Main Lagi</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="app-footer">
+  <p data-i18n="footerText">LKPD Informatika Kelas 9 · E-Portofolio dan Showcase Digital · © 2026 SMP Negeri 19 Kota Bekasi</p>
+</footer>
+
+<!-- ============ MODAL HOW TO PLAY ============ -->
+<div class="modal-overlay hidden" id="modalHowToPlay">
+  <div class="modal">
+    <button class="modal-close" aria-label="Tutup">✕</button>
+    <h3 data-i18n="howToPlayTitle">📖 Cara Bermain / How to Play</h3>
+    <ul class="modal-list">
+      <li data-i18n="howToPlay1">Selesaikan 6 level secara berurutan.</li>
+      <li data-i18n="howToPlay2">Setiap level punya tipe permainan berbeda: quiz, drag & drop, matching, simulasi, sorting.</li>
+      <li data-i18n="howToPlay3">Kumpulkan bintang (1–3) berdasarkan skor di setiap level.</li>
+      <li data-i18n="howToPlay4">Gunakan tombol 💡 untuk bantuan jika kesulitan.</li>
+      <li data-i18n="howToPlay5">Ganti bahasa dengan tombol 🇮🇩 ID / 🇬🇧 EN di kanan atas.</li>
+      <li data-i18n="howToPlay6">Progres tersimpan otomatis, aman jika halaman di-refresh.</li>
+    </ul>
+    <button class="btn btn-primary" onclick="document.getElementById('modalHowToPlay').classList.add('hidden')" data-i18n="close">Tutup</button>
+  </div>
+</div>
+
+<!-- ============ MODAL TEACHER ============ -->
+<div class="modal-overlay hidden" id="modalTeacher">
+  <div class="modal modal-wide">
+    <button class="modal-close" aria-label="Tutup">✕</button>
+    <h3>🎓 Mode Guru / Teacher Mode</h3>
+    <div id="teacherContent"></div>
+  </div>
+</div>
+
+<!-- ============ TOAST ============ -->
+<div class="toast hidden" id="toast"></div>
+
+<!-- ============ CONFETTI LAYER ============ -->
+<div class="confetti-layer" id="confettiLayer"></div>
+
+<script src="script.js" defer></script>
+</body>
+</html>
